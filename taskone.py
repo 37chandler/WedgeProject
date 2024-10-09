@@ -23,12 +23,13 @@ gbq_proj_id = 'wedgeproject-438019'
 private_key =service_path + service_file
 
 #set the credentials
-credentials = service_account.Credentials.from_service_account_file(service_path + service_file)
+credentials = service_account.Credentials.from_service_account_file(private_key)
 
 #establish the connection to the GBQ
 client = bigquery.Client(credentials = credentials, project=gbq_proj_id)
 
 #Read in the data from zip file
+
 #set the path to the data
 path = "C:/Users/thaefele31/Documents/ADA/Assignments/WedgeProject/Data/"
 
