@@ -2,7 +2,6 @@ import os
 import pandas as pd
 import numpy as np
 import pandas_gbq
-import janitor
 import zipfile36 as zipfile
 from google.cloud import bigquery
 from google.oauth2 import service_account
@@ -95,19 +94,11 @@ def clean_data(df):
 def upload_to_bigquery(df,table_name):
     print('Uploading data to the cloud...')
 
-        #set the path to the credentials file 
-    service_path = "C:/Users/thaefele31/Documents/ADA/Assignments/WedgeProject/"
-    service_file = 'wedgeproject-438019-d3b6147b9c41.json' 
-    gbq_proj_id = 'wedgeproject-438019' 
+    #setup connection with user default credentials
+    project_id = 'wedgeproject-438019'
 
-    # set the credentials
-    private_key =service_path + service_file
-
-    #set the credentials
-    credentials = service_account.Credentials.from_service_account_file(private_key)
-
-    #establish the connection to the GBQ
-    client = bigquery.Client(credentials = credentials, project=gbq_proj_id)
+#setup connection with user default credentials
+    client = bigquery.Client(project=project_id)
 
 
     #Setup schema for the data
