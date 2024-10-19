@@ -82,13 +82,11 @@ def clean_data(df):
         'trans_id': 'float'
 })
     
-#add empty rows back to string columns
-    string_columns = df.select_dtypes(include=['string']).columns
+#add empty rows back to null trans_status
+    df.loc
 
-    for col in string_columns:
-        if df[col].isnull().any():
-            df[col] = df[col].fillna('')
     return df
+
 
 #function upload to database
 def upload_to_bigquery(df,table_name):
@@ -162,6 +160,15 @@ def upload_to_bigquery(df,table_name):
         schema=schema,  # Optional schema definition
     )
 
+    print("Checking if table exists...")
+
+    # Check if table exists and remove it if it does
+    try:
+        client.get_table(table_name)
+        print(f"Deleting table {table_name}...")
+        client.delete_table(table_name)
+    except NotFound:
+        print(f"Table {table_name} does not exist.")
 
     # Load DataFrame to BigQuery (without saving locally)
     job = client.load_table_from_dataframe(df, table_name, job_config=job_config)
