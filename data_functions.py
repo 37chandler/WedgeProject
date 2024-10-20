@@ -87,11 +87,9 @@ def clean_data(df):
     
     # Replace nan in string columns with null
     for column in string_columns.keys():
-        df[column] = df[column].fillna('NULL')
-        df[column] = df[column].replace(["\\N", "0"], 'NULL')
+        df[column] = df[column].fillna(np.nan)
+        df[column] = df[column].replace(["\\N", "0", "\N"], np.nan)
         df[column] = df[column].replace([" "], "")
-
-        
 
     # Step 3: Apply the astype conversion
 
