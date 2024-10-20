@@ -26,64 +26,82 @@ def clean_data(df):
     #convert to datetime
     df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
 
-    # Replace '\\N' with NaN
-    df = df.replace(r'\\N', np.nan, regex=True)
-    
-    # Replace empty strings or spaces with NaN
-    df = df.replace(r'^\s*$', np.nan, regex=True)
+    # define float and string columns
+    float_columns = {
+    'register_no': 'float',
+    'emp_no': 'float',
+    'trans_no': 'float',
+    'department': 'float',
+    'quantity': 'float',
+    'Scale': 'float',
+    'cost': 'float',
+    'unitPrice': 'float',
+    'total': 'float',
+    'regPrice': 'float',
+    'altPrice': 'float',
+    'tax': 'float',
+    'taxexempt': 'float',
+    'foodstamp': 'float',
+    'wicable': 'float',
+    'discount': 'float',
+    'memDiscount': 'float',
+    'discountable': 'float',
+    'discounttype': 'float',
+    'voided': 'float',
+    'percentDiscount': 'float',
+    'ItemQtty': 'float',
+    'volDiscType': 'float',
+    'volume': 'float',
+    'VolSpecial': 'float',
+    'mixMatch': 'float',
+    'matched': 'float',
+    'numflag': 'float',
+    'itemstatus': 'float',
+    'tenderstatus': 'float',
+    'varflag': 'float',
+    'local': 'float',
+    'organic': 'float',
+    'receipt': 'float',
+    'card_no': 'float',
+    'store': 'float',
+    'branch': 'float',
+    'match_id': 'float',
+    'trans_id': 'float'
+}
 
-    
-    #assign data types
-    df = df.astype({
-        'register_no': 'float',
-        'emp_no': 'float',
-        'trans_no': 'float',
+    string_columns = {
         'upc': 'string',
         'description': 'string',
         'trans_type': 'string',
         'trans_subtype': 'string',
         'trans_status': 'string',
-        'department': 'float',
-        'quantity': 'float',
-        'Scale': 'float',
-        'cost': 'float',
-        'unitPrice': 'float',
-        'total': 'float',
-        'regPrice': 'float',
-        'altPrice': 'float',
-        'tax': 'float',
-        'taxexempt': 'float',
-        'foodstamp': 'float',
-        'wicable': 'float',
-        'discount': 'float',
-        'memDiscount': 'float',
-        'discountable': 'float',
-        'discounttype': 'float',
-        'voided': 'float',
-        'percentDiscount': 'float',
-        'ItemQtty': 'float',
-        'volDiscType': 'float',
-        'volume': 'float',
-        'VolSpecial': 'float',
-        'mixMatch': 'float',
-        'matched': 'float',
-        'numflag': 'float',
-        'itemstatus': 'float',
-        'tenderstatus': 'float',
-        'charflag': 'string',
-        'varflag': 'float',
-        'local': 'float',
-        'organic': 'float',
-        'receipt': 'float',
-        'card_no': 'float',
-        'store': 'float',
-        'branch': 'float',
-        'match_id': 'float',
-        'trans_id': 'float'
-})
+        'charflag': 'string'
+    }
+
+    # Step 2: Handle nulls for float and string columns separately
+
+    # Replace nulls in float columns 
+    for column in float_columns.keys():
+        df[column] = df[column].fillna(0.0)
+        df[column] = df[column].replace(["\\N", " "], 0.0)
     
-#add empty rows back to null trans_status
-    df.loc
+    # Replace nan in string columns with null
+    for column in string_columns.keys():
+        df[column] = df[column].fillna('NULL')
+        df[column] = df[column].replace(["\\N", "0"], 'NULL')
+        df[column] = df[column].replace([" "], "")
+
+        
+
+    # Step 3: Apply the astype conversion
+
+    # Convert float columns
+    for column, dtype in float_columns.items():
+        df[column] = df[column].astype(dtype)
+
+    # Convert string columns
+    for column, dtype in string_columns.items():
+        df[column] = df[column].astype(dtype)
 
     return df
 
