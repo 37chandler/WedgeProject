@@ -21,11 +21,14 @@ This project was tough! But I really enjoyed the work and I am looking forward t
 Loads all data into GBQ data set.
 
 `TaskOneNEW.ipynb`: 
-This file unzips the data, determines the header and delimeter of each file, then uses the data_functions.py file to clean and load the data into GBQ.
+This file unzips the data, determines the header and delimeter of each file, then uses the data_functions.py file to clean and load the data into GBQ. I created a dictionary of headers to have handy for the files that did not have a header. I also included a percentage completed just to give feedback on how far along the process was. 
 
 `data_functions.py`: 
 This file contains two functions that clean the data, then take a pandas dataframe and loads it into a GBQ table.
 
+    - `clean_data`: This function takes a pandas dataframe as an argument and runs it through a series of cleaning steps. To start it assigns false to any columns with null or empty to the boolean values. Then it converts the date column to datetime objects. Finally it creates two dictionaries to hold string and float values for the appropriate columns. I split the data because I wanted to ensure the empty spaces in the string columns were not converted to null values where appropriate. Once this is done, it converts the string columns to string values and the float columns to float values and returns the cleaned dataframe.
+
+    - `load_data`: This function takes a cleaned pandas dataframe and loads it into a GBQ table. It first creates a client object to connect to the GBQ data set. Then it creates a table schema from the cleaned dataframe. Finally it loads the data into the GBQ table. I also put in a check to see if the table already exists and if it does, it will delete the table and recreate it. This was useful for testing purposes. In the future I want to add a check to see if the table is empty and if it is, it will load the data. If it is not empty, it will not load the data. This will be useful for when I am running the notebook multiple times and do not want to keep loading the same data over and over again.
 
 ### Task 2
 
