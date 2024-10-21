@@ -5,6 +5,7 @@ import pandas_gbq
 import zipfile36 as zipfile
 from google.cloud import bigquery
 from google.oauth2 import service_account
+from google.cloud.exceptions import NotFound 
 
 
 #cleaning the data
@@ -82,14 +83,13 @@ def clean_data(df):
 
     # Replace nulls in float columns 
     for column in float_columns.keys():
-        df[column] = df[column].fillna(0.0)
-        df[column] = df[column].replace(["\\N", " "], 0.0)
+        df[column] = df[column].fillna(np.nan)
+        df[column] = df[column].replace(["\\N", " ",""], np.nan)
     
     # Replace nan in string columns with null
     for column in string_columns.keys():
         df[column] = df[column].fillna(np.nan)
-        df[column] = df[column].replace(["\\N", "0", "\N"], np.nan)
-        df[column] = df[column].replace([" "], "")
+        df[column] = df[column].replace(["\\N", "0"], np.nan)
 
     # Step 3: Apply the astype conversion
 
